@@ -1,11 +1,15 @@
-# Python
+# Git
+.git/
+.gitignore
+
+# Docker
+.dockerignore
+Dockerfile
+
+# Python virtual environment
+venv/
 __pycache__/
 *.pyc
 
-# Environment
-venv/
-.env
-
-# Django
-*.log
+# Local database
 db.sqlite3
