@@ -1,23 +1,25 @@
 {% extends "store/base.html" %}
 
 {% block content %}
-    <h1 class="display-5 fw-bold">{{ product.name }}</h1>
-    <hr class="my-4">
-
     <div class="row">
-        <div class="col-md-8">
-            <p class="lead">{{ product.description|linebreaks }}</p>
+        <div class="col-md-6 mb-4">
+            <img src="https://picsum.photos/seed/{{ product.name }}/800/600" class="img-fluid rounded-3 shadow-lg" alt="{{ product.name }}">
         </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h3 class="card-title">Price: £{{ product.price }}</h3>
-                    <p>This is a PoC. A real site would have stock levels and an 'Add to Cart' form.</p>
-                    <a href="{% url 'cart' %}" class="btn btn-success btn-lg w-100">Add to Cart (PoC)</a>
-                </div>
+
+        <div class="col-md-6">
+            <h1 class="display-4 fw-bold mb-3">{{ product.name }}</h1>
+            <h2 class="text-danger mb-4">£{{ product.price }}</h2>
+            <hr>
+
+            <p class="lead mb-4">{{ product.description|linebreaks }}</p>
+
+            <div class="d-grid gap-2">
+                <a href="{% url 'cart' %}" class="btn btn-danger btn-lg shadow-sm">Add to Cart (PoC)</a>
+                <p class="text-muted text-center mt-3">DevOps Note: This is a placeholder action in the PoC.</p>
             </div>
+
+            <hr>
+            <a href="{% url 'product_list' %}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left-circle me-1"></i> Back to Products</a>
         </div>
     </div>
-    <br>
-    <a href="{% url 'product_list' %}" class="btn btn-outline-secondary">← Back to Products</a>
 {% endblock %}
