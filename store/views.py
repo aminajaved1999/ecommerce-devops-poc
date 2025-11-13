@@ -1,11 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.http import JsonResponse
-from django.db import transaction # <-- Added for atomic transactions
+from django.db import transaction 
 import json
 
 # Import all models
-from .models import Product, Cart, CartItem, Order, OrderItem 
+from .models import Product, Cart, CartItem, Order, OrderItem, Category # <-- Added Category
 
 # --- Helper function to get the user's cart object ---
 def get_or_create_cart(request):
@@ -23,13 +23,27 @@ def get_or_create_cart(request):
         # The unique=True constraint on session_key in the model guarantees this is safe
         cart, created = Cart.objects.get_or_create(session_key=session_key)
 
+    # If the user logs in while having an anonymous cart, merge the carts (future improvement)
+    # For now, this simple logic ensures a cart is always returned.
     return cart
 
-# View 1: Home/Product List Page
-def product_list(request):
+# View 1: Home/Product List Page - MODIFIED TO ACCEPT SLUG
+def product_list(request, category_slug=None):
+    # Base query: Get all active products
     products = Product.objects.all()
+    current_category = None
+    
+    if category_slug:
+        # If a slug is provided, filter the products
+        try:
+            current_category = Category.objects.get(slug=category_slug)
+            products = products.filter(category=current_category)
+        except Category.DoesNotExist:
+            pass # Show all products if category not found
+
     context = {
-        'products': products
+        'products': products,
+        'current_category': current_category # Pass category name for display
     }
     return render(request, 'store/product_list.html', context)
 
@@ -173,7 +187,7 @@ def checkout(request):
     }
     return render(request, 'store/checkout.html', context)
 
-# NEW: View to process the order (CREATE ORDER & DECREMENT STOCK)
+# View to process the order (CREATE ORDER & DECREMENT STOCK)
 @transaction.atomic # Ensures that all database operations succeed or fail together
 def process_order(request):
     if request.method != 'POST':
@@ -223,7 +237,7 @@ def process_order(request):
     
     return redirect('order_success', order_id=order.id)
 
-# NEW: Simple success page view
+# Simple success page view
 def order_success(request, order_id):
     order = get_object_or_404(Order, pk=order_id)
     context = {

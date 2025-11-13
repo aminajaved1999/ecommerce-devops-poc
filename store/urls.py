@@ -2,8 +2,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # Home/Product List
+    # Home/Product List (Modified to accept optional category slug)
     path('', views.product_list, name='product_list'),
+    path('category/<slug:category_slug>/', views.product_list, name='product_list_by_category'), # <-- NEW: Filtered view
 
     # Product Detail
     path('product/<int:pk>/', views.product_detail, name='product_detail'),
@@ -14,7 +15,7 @@ urlpatterns = [
     # Cart
     path('cart/', views.view_cart, name='cart'),
     
-    # AJAX Cart Update (FIXES THE NoReverseMatch ERROR)
+    # AJAX Cart Update
     path('update_cart/', views.update_cart, name='update_cart'), 
 
     # Checkout and Order Processing
