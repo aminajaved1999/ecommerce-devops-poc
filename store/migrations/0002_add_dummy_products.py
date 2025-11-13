@@ -1,9 +1,6 @@
 from django.db import migrations
 
 def create_dummy_products(apps, schema_editor):
-    """
-    Creates dummy products for the e-commerce PoC.
-    """
     Product = apps.get_model('store', 'Product')
 
     Product.objects.create(
@@ -25,7 +22,7 @@ def create_dummy_products(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('store', '0001_initial'), # This should now be correct!
+        ('store', '0001_initial'), # This is now correct!
     ]
 
     operations = [
