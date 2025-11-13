@@ -1,4 +1,5 @@
 {% extends "store/base.html" %}
+{% load static %}
 
 {% block content %}
 
@@ -8,19 +9,19 @@
 
     <div class="card p-4 p-md-5 shadow-lg bg-white">
         <div class="row g-4 align-items-start">
-            <div class="col-md-6">
+            <div class="col-md-6" style="background-color: var(--color-light-pink); border-radius: 12px; padding: 2rem;">
                 {% if "Shirt" in product.name %}
-                    <img src="https://images.unsplash.com/photo-1574317424683-11b3394806a1?q=80&w=2070&auto=format&fit=cover"
-                         class="img-fluid rounded-3 shadow-lg" alt="{{ product.name }}">
+                    <img src="{% static 'img/shirt.jpg' %}"
+                         class="img-fluid rounded-3 shadow-sm" alt="{{ product.name }}" style="width: 100%; height: auto; object-fit: contain;">
                 {% elif "Wallet" in product.name %}
-                    <img src="https://images.unsplash.com/photo-1549419161-042838491c6e?q=80&w=2070&auto=format&fit=cover"
-                         class="img-fluid rounded-3 shadow-lg" alt="{{ product.name }}">
+                    <img src="{% static 'img/wallet.jpg' %}"
+                         class="img-fluid rounded-3 shadow-sm" alt="{{ product.name }}" style="width: 100%; height: auto; object-fit: cover;">
                 {% elif "Shoes" in product.name %}
-                    <img src="https://images.unsplash.com/photo-1606107557195-2c83086b13be?q=80&w=2070&auto=format&fit=cover"
-                         class="img-fluid rounded-3 shadow-lg" alt="{{ product.name }}">
+                    <img src="{% static 'img/shoes.jpg' %}"
+                         class="img-fluid rounded-3 shadow-sm" alt="{{ product.name }}" style="width: 100%; height: auto; object-fit: contain;">
                 {% else %}
-                    <img src="https://picsum.photos/seed/general/800/600"
-                         class="img-fluid rounded-3 shadow-lg" alt="{{ product.name }}">
+                    <img src="{% static 'img/default.jpg' %}"
+                         class="img-fluid rounded-3 shadow-sm" alt="{{ product.name }}" style="width: 100%; height: auto; object-fit: cover;">
                 {% endif %}
             </div>
 
@@ -40,7 +41,7 @@
                 <p class="lead mb-4 text-muted">{{ product.description|linebreaks }}</p>
 
                 <div class="d-grid gap-2 mb-4">
-                    <a href="{% url 'cart' %}" class="btn btn-accent btn-lg shadow-sm fw-bold">
+                    <a href="{% url 'cart' %}" class="btn btn-primary btn-lg shadow-sm fw-bold">
                         <i class="bi bi-cart-plus me-2"></i> ADD TO CART (Demo)
                     </a>
                 </div>
