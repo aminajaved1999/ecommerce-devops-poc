@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ipswich Retail PoC</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
+        .container { max-width: 960px; margin: 2em auto; padding: 1em; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        nav { background-color: #333; color: #fff; padding: 1em; }
+        nav a { color: #fff; text-decoration: none; margin-right: 1em; }
+        nav a:hover { text-decoration: underline; }
+        .product { border: 1px solid #ccc; padding: 1em; margin-bottom: 1em; border-radius: 5px; }
+        .btn { background-color: #007bff; color: #fff; padding: 10px 15px; text-decoration: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'product_list' %}">Home (Product List)</a>
+        <a href="{% url 'cart' %}">View Cart</a>
+    </nav>
+    <div class="container">
+        {% block content %}
+        <!-- Page content will go here -->
+        {% endblock %}
+    </div>
+</body>
+</html>

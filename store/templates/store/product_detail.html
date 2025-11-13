@@ -1,0 +1,11 @@
+{% extends "store/base.html" %}
+
+{% block content %}
+    <h1>{{ product.name }}</h1>
+    <div class="product">
+        <p><strong>Price: £{{ product.price }}</strong></p>
+        <p>{{ product.description|linebreaks }}</p>
+        <br>
+        <a href="{% url 'cart' %}" class="btn">Add to Cart (PoC)</a>
+    </div>
+{% endblock %}
