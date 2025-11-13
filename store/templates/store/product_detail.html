@@ -40,11 +40,24 @@
 
                 <p class="lead mb-4 text-muted">{{ product.description|linebreaks }}</p>
 
-                <div class="d-grid gap-2 mb-4">
-                    <a href="{% url 'cart' %}" class="btn btn-primary btn-lg shadow-sm fw-bold">
-                        <i class="bi bi-cart-plus me-2"></i> ADD TO CART (Demo)
-                    </a>
-                </div>
+                {# MODIFIED BLOCK: Added a form for quantity selection #}
+                <form action="{% url 'add_to_cart' product.pk %}" method="POST">
+                    {% csrf_token %}
+                    <div class="row g-2 align-items-center mb-4">
+                        <div class="col-auto">
+                            <label for="quantity" class="col-form-label fw-bold">Quantity:</label>
+                        </div>
+                        <div class="col-3">
+                            <input type="number" id="quantity" name="quantity" class="form-control text-center" value="1" min="1" max="99" style="width: 80px;">
+                        </div>
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary btn-lg shadow-sm fw-bold w-100">
+                                <i class="bi bi-cart-plus me-2"></i> ADD TO CART
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                {# END MODIFIED BLOCK #}
 
                 <div class="small text-muted">
                     <i class="bi bi-info-circle me-1"></i>

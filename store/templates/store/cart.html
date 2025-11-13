@@ -10,10 +10,52 @@
     <div class="row g-4">
         <div class="col-lg-8">
             <div class="card p-4 shadow-sm bg-white">
-                <h5 class="fw-bold text-primary mb-3">Cart Contents (PoC Status)</h5>
-                <div class="alert alert-info">
-                    <strong>Proof-of-Concept Notice:</strong> A full implementation would dynamically render your selected products and their totals here.
-                </div>
+                <h5 class="fw-bold text-primary mb-3">Cart Contents</h5>
+                
+                {% if cart_items %}
+                    
+                    {# REMOVED FORM - USING AJAX INSTEAD #}
+                    <ul class="list-group list-group-flush" id="cart-items-list">
+                        {% for item in cart_items %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center py-3" data-product-id="{{ item.product_id }}" id="item-{{ item.product_id }}">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div>
+                                        <h6 class="mb-0 fw-bold">{{ item.name }}</h6>
+                                        <small class="text-muted">Unit Price: £<span id="price-{{ item.product_id }}">{{ item.price|floatformat:2 }}</span></small>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex align-items-center gap-4">
+                                    {# QUANTITY INPUT FIELD WITH LISTENER #}
+                                    <div class="col-auto">
+                                        <label for="quantity_{{ item.product_id }}" class="visually-hidden">Quantity</label>
+                                        <input type="number" 
+                                               id="quantity_{{ item.product_id }}" 
+                                               name="quantity_{{ item.product_id }}" 
+                                               class="form-control form-control-sm text-center cart-quantity-input" 
+                                               value="{{ item.quantity }}" 
+                                               min="0" 
+                                               max="99" 
+                                               data-product-id="{{ item.product_id }}"
+                                               style="width: 70px;">
+                                    </div>
+                                    
+                                    <span class="fw-bold price-text" style="font-size: 1.2rem; min-width: 90px; text-align: right;">
+                                        £<span id="subtotal-{{ item.product_id }}">{{ item.subtotal|floatformat:2 }}</span>
+                                    </span>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    
+                    {# REMOVED UPDATE BUTTON #}
+
+                {% else %}
+                    <div class="alert alert-info" id="empty-cart-message">
+                        Your cart is empty. <a href="{% url 'product_list' %}" class="alert-link">Start shopping!</a>
+                    </div>
+                {% endif %}
+
             </div>
         </div>
 
@@ -21,11 +63,11 @@
             <div class="card p-4 shadow-sm bg-white">
                 <h5 class="fw-bold text-dark mb-3">Order Summary</h5>
                 <ul class="list-unstyled small text-muted">
-                    <li class="d-flex justify-content-between"><span>Subtotal:</span><span>£125.97</span></li>
+                    <li class="d-flex justify-content-between"><span>Subtotal:</span><span>£<span id="summary-subtotal">{{ cart_total|floatformat:2 }}</span></span></li>
                     <li class="d-flex justify-content-between"><span>Shipping:</span><span>Free</span></li>
-                    <li class="d-flex justify-content-between fw-bold text-dark fs-5 pt-2 border-top mt-2"><span>Total:</span><span>£125.97</span></li>
+                    <li class="d-flex justify-content-between fw-bold text-dark fs-5 pt-2 border-top mt-2"><span>Total:</span><span>£<span id="summary-total">{{ cart_total|floatformat:2 }}</span></span></li>
                 </ul>
-                <a href="{% url 'checkout' %}" class="btn btn-primary mt-3 fw-bold">Proceed to Checkout</a>
+                <a href="{% url 'checkout' %}" class="btn btn-primary mt-3 fw-bold {% if not cart_items %}disabled{% endif %}" id="checkout-button">Proceed to Checkout</a>
             </div>
         </div>
     </div>
@@ -34,4 +76,95 @@
         <a href="{% url 'product_list' %}" class="btn btn-outline-secondary">← Keep Shopping</a>
     </div>
 
+    {# AJAX JAVASCRIPT FOR REAL-TIME UPDATES #}
+    <script>
+        // Function to get the CSRF token from the cookie
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.startsWith(name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        const csrftoken = getCookie('csrftoken');
+        const quantityInputs = document.querySelectorAll('.cart-quantity-input');
+        const updateUrl = "{% url 'update_cart' %}";
+
+        quantityInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                const productId = this.getAttribute('data-product-id');
+                let newQuantity = parseInt(this.value);
+
+                // Ensure quantity is not negative
+                if (isNaN(newQuantity) || newQuantity < 0) {
+                    newQuantity = 0;
+                    this.value = 0;
+                }
+
+                // Prepare data for server
+                const data = {
+                    product_id: productId,
+                    quantity: newQuantity
+                };
+
+                // Send AJAX request
+                fetch(updateUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const itemElement = document.getElementById(`item-${productId}`);
+                        
+                        // 1. Update/Remove Item Element
+                        if (data.item_removed) {
+                            itemElement.remove();
+                            
+                            // Check if cart is now empty
+                            const remainingItems = document.querySelectorAll('#cart-items-list li');
+                            if (remainingItems.length === 0) {
+                                document.getElementById('cart-items-list').innerHTML = `
+                                    <div class="alert alert-info" id="empty-cart-message">
+                                        Your cart is empty. <a href="{% url 'product_list' %}" class="alert-link">Start shopping!</a>
+                                    </div>
+                                `;
+                                document.getElementById('checkout-button').classList.add('disabled');
+                            }
+                        } else {
+                            // Update item subtotal
+                            document.getElementById(`subtotal-${productId}`).textContent = data.item_subtotal.toFixed(2);
+                        }
+
+                        // 2. Update Order Summary
+                        document.getElementById('summary-subtotal').textContent = data.cart_total.toFixed(2);
+                        document.getElementById('summary-total').textContent = data.cart_total.toFixed(2);
+                        
+                    } else {
+                        // Handle error (e.g., alert the user)
+                        console.error('Update failed:', data.error);
+                        alert('Error updating cart: ' + data.error);
+                        // Optionally reload the page or revert input value
+                    }
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    alert('A network error occurred while updating the cart.');
+                });
+            });
+        });
+
+    </script>
 {% endblock %}
