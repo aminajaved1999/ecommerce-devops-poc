@@ -1,8 +1,12 @@
 {% extends "store/base.html" %}
 
 {% block content %}
-    <h1>Checkout</h1>
-    <p>This is a Proof-of-Concept. A full checkout form would go here.</p>
-    <br>
-    <a href="{% url 'product_list' %}" class="btn">Back to Shopping</a>
+    <h1 class="display-5 fw-bold">Checkout</h1>
+    <hr class="my-4">
+
+    <div class="alert alert-warning">
+        <strong>This is a Proof-of-Concept.</strong> A real checkout page would include forms for shipping, billing, and payment.
+    </div>
+
+    <a href="{% url 'cart' %}" class="btn btn-outline-secondary btn-lg">← Back to Cart</a>
 {% endblock %}

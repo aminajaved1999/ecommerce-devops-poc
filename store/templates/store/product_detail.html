@@ -1,11 +1,23 @@
 {% extends "store/base.html" %}
 
 {% block content %}
-    <h1>{{ product.name }}</h1>
-    <div class="product">
-        <p><strong>Price: £{{ product.price }}</strong></p>
-        <p>{{ product.description|linebreaks }}</p>
-        <br>
-        <a href="{% url 'cart' %}" class="btn">Add to Cart (PoC)</a>
+    <h1 class="display-5 fw-bold">{{ product.name }}</h1>
+    <hr class="my-4">
+
+    <div class="row">
+        <div class="col-md-8">
+            <p class="lead">{{ product.description|linebreaks }}</p>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title">Price: £{{ product.price }}</h3>
+                    <p>This is a PoC. A real site would have stock levels and an 'Add to Cart' form.</p>
+                    <a href="{% url 'cart' %}" class="btn btn-success btn-lg w-100">Add to Cart (PoC)</a>
+                </div>
+            </div>
+        </div>
     </div>
+    <br>
+    <a href="{% url 'product_list' %}" class="btn btn-outline-secondary">← Back to Products</a>
 {% endblock %}

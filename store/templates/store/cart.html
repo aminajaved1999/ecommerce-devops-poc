@@ -1,8 +1,15 @@
 {% extends "store/base.html" %}
 
 {% block content %}
-    <h1>Your Shopping Cart</h1>
-    <p>This is a Proof-of-Concept. A full cart would list your items here.</p>
-    <br>
-    <a href="{% url 'checkout' %}" class="btn">Proceed to Checkout (PoC)</a>
+    <h1 class="display-5 fw-bold">Your Shopping Cart</h1>
+    <hr class="my-4">
+
+    <div class="alert alert-info">
+        <strong>This is a Proof-of-Concept.</strong> A full cart would list your items here.
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <a href="{% url 'product_list' %}" class="btn btn-outline-secondary btn-lg">← Keep Shopping</a>
+        <a href="{% url 'checkout' %}" class="btn btn-primary btn-lg">Proceed to Checkout (PoC) →</a>
+    </div>
 {% endblock %}
