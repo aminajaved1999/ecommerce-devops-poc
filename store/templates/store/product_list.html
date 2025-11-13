@@ -46,9 +46,23 @@
                                     <h4 class="fw-bolder mb-0 price-text">
                                         £{{ product.price }}
                                     </h4>
-                                    <a href="{% url 'product_detail' product.pk %}" class="btn btn-primary btn-sm shadow-sm fw-bold">
-                                        Details 
-                                    </a>
+                                    
+                                    {# MODIFIED BLOCK: Added a form for quick add to cart #}
+                                    <div class="d-flex gap-2">
+                                        <a href="{% url 'product_detail' product.pk %}" class="btn btn-outline-secondary btn-sm shadow-sm fw-bold">
+                                            Details 
+                                        </a>
+                                        <form action="{% url 'add_to_cart' product.pk %}" method="POST" style="display: inline;">
+                                            {% csrf_token %}
+                                            {# Hidden input to send quantity=1 for quick add #}
+                                            <input type="hidden" name="quantity" value="1"> 
+                                            <input type="hidden" name="next" value="{% url 'product_list' %}"> 
+                                            <button type="submit" class="btn btn-primary btn-sm shadow-sm fw-bold">
+                                                <i class="bi bi-cart-plus"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    {# END MODIFIED BLOCK #}
                                 </div>
                             </div>
                         </div>

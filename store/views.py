@@ -42,7 +42,7 @@ def product_detail(request, pk):
     }
     return render(request, 'store/product_detail.html', context)
 
-# View 2.5: Add to Cart Logic (Uses database CartItem)
+# View 2.5: Add to Cart Logic (Uses database CartItem) - MODIFIED
 def add_to_cart(request, pk):
     if request.method == 'POST':
         product = get_object_or_404(Product, pk=pk)
@@ -69,7 +69,9 @@ def add_to_cart(request, pk):
 
         messages.success(request, f"{quantity} x {product.name} added to cart!")
         
-    return redirect('cart')
+        # NEW LOGIC: Check for 'next' URL to redirect after adding to cart
+        next_url = request.POST.get('next', 'cart')
+        return redirect(next_url)
 
 # View 3.5: Update Cart Logic (Uses database CartItem and AJAX)
 def update_cart(request):
