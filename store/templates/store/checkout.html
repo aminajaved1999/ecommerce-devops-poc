@@ -4,7 +4,7 @@
 
     <header class="mb-5 border-bottom pb-3">
         <h1 class="display-5 fw-bold text-dark">Secure Checkout</h1>
-        <p class="lead text-muted">Final step to complete your order. Focus is on E-2-E pipeline demonstration.</p>
+        <p class="lead text-muted">Final step to complete your order. This process handles the transaction and stock decrement.</p>
     </header>
 
     <div class="card p-4 p-md-5 shadow-lg bg-white">
@@ -13,26 +13,32 @@
             <i class="bi bi-exclamation-triangle-fill text-warning"></i>
             <div>
                 <strong>Proof-of-Concept Notice.</strong>
-                This page demonstrates where payment, billing, and shipping flows would live. No live transactions occur.
+                This form finalizes the Order and decrements stock in the database. No live transactions occur.
             </div>
         </div>
 
         <div class="row g-4 mt-3">
             <div class="col-md-7">
-                <h2 class="h5 fw-bold text-dark mb-3">Production Requirements Demonstrated</h2>
+                <h2 class="h5 fw-bold text-dark mb-3">Confirmation Summary</h2>
                 <ul class="list-unstyled small text-muted">
-                    <li><i class="bi bi-check-circle-fill text-accent me-2"></i> **Pipeline:** End-to-end functionality of the CI/CD deployment.</li>
-                    <li><i class="bi bi-check-circle-fill text-accent me-2"></i> **Modularity:** Separation of concerns using Django M-V-T.</li>
-                    <li><i class="bi bi-check-circle-fill text-accent me-2"></i> **Consistency:** Containerization via Docker ensures stable environments.</li>
+                    <li><i class="bi bi-check-circle-fill text-accent me-2"></i> **Order Total:** £{{ cart_total|floatformat:2 }}</li>
+                    <li><i class="bi bi-check-circle-fill text-accent me-2"></i> **Action:** Order created in the database (Order model)</li>
+                    <li><i class="bi bi-check-circle-fill text-accent me-2"></i> **Inventory:** Stock levels decremented (Product model)</li>
                 </ul>
             </div>
             <div class="col-md-5">
                 <div class="card p-4 shadow-sm">
                     <h5 class="fw-bold text-dark mb-3">Order Finalization</h5>
-                    <p class="small text-muted">This action completes the PoC lifecycle demo.</p>
-                    <a href="{% url 'product_list' %}" class="btn btn-primary w-100 fw-bold">
-                        Complete Order (Demo)
-                    </a>
+                    <p class="small text-muted">Confirm to complete the PoC lifecycle demo.</p>
+                    
+                    {# FORM TO PROCESS ORDER #}
+                    <form action="{% url 'process_order' %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary w-100 fw-bold">
+                            Complete Order (Finalize)
+                        </button>
+                    </form>
+                    
                     <a href="{% url 'cart' %}" class="btn btn-outline-secondary w-100 mt-2">
                         ← Back to Cart
                     </a>

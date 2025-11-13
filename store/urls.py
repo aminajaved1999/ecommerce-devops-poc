@@ -14,9 +14,11 @@ urlpatterns = [
     # Cart
     path('cart/', views.view_cart, name='cart'),
     
-    # NEW: Update Cart functionality (for quantity changes)
-    path('update_cart/', views.update_cart, name='update_cart'),
+    # AJAX Cart Update (FIXES THE NoReverseMatch ERROR)
+    path('update_cart/', views.update_cart, name='update_cart'), 
 
-    # Checkout
+    # Checkout and Order Processing
     path('checkout/', views.checkout, name='checkout'),
+    path('checkout/process/', views.process_order, name='process_order'), 
+    path('order/success/<int:order_id>/', views.order_success, name='order_success'),
 ]

@@ -39,8 +39,17 @@
                 </div>
 
                 <p class="lead mb-4 text-muted">{{ product.description|linebreaks }}</p>
+                
+                {# NEW: Stock Status Display #}
+                <div class="mb-4">
+                    {% if product.inventory_stock > 0 %}
+                        <span class="small text-success fw-bold"><i class="bi bi-check-circle-fill me-1"></i> In Stock ({{ product.inventory_stock }} available)</span>
+                    {% else %}
+                        <span class="small text-danger fw-bold"><i class="bi bi-x-circle-fill me-1"></i> Sold Out</span>
+                    {% endif %}
+                </div>
+                {# END NEW #}
 
-                {# MODIFIED BLOCK: Added a form for quantity selection #}
                 <form action="{% url 'add_to_cart' product.pk %}" method="POST">
                     {% csrf_token %}
                     <div class="row g-2 align-items-center mb-4">
@@ -48,16 +57,15 @@
                             <label for="quantity" class="col-form-label fw-bold">Quantity:</label>
                         </div>
                         <div class="col-3">
-                            <input type="number" id="quantity" name="quantity" class="form-control text-center" value="1" min="1" max="99" style="width: 80px;">
+                            <input type="number" id="quantity" name="quantity" class="form-control text-center" value="1" min="1" max="{{ product.inventory_stock }}" style="width: 80px;" {% if product.inventory_stock == 0 %}disabled{% endif %}>
                         </div>
                         <div class="col">
-                            <button type="submit" class="btn btn-primary btn-lg shadow-sm fw-bold w-100">
+                            <button type="submit" class="btn btn-primary btn-lg shadow-sm fw-bold w-100" {% if product.inventory_stock == 0 %}disabled{% endif %}>
                                 <i class="bi bi-cart-plus me-2"></i> ADD TO CART
                             </button>
                         </div>
                     </div>
                 </form>
-                {# END MODIFIED BLOCK #}
 
                 <div class="small text-muted">
                     <i class="bi bi-info-circle me-1"></i>
