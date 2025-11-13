@@ -3,53 +3,65 @@
 
 {% block content %}
 
-    <div class="row align-items-center mb-5 p-4 rounded-3 shadow-lg border-start border-5 border-primary bg-light">
-        <div class="col-md-7">
-            <h1 class="display-4 fw-bolder text-dark mb-3">Discover Quality, Delivered Fast.</h1>
-            <p class="lead text-muted mb-4">
-                Experience seamless shopping powered by a robust, continuous integration and deployment pipeline.
-            </p>
-            <a href="#products-list" class="btn btn-primary btn-lg shadow-sm">Shop Our Collection</a>
-        </div>
-        <div class="col-md-5 d-none d-md-block text-end">
-            <img src="https://images.unsplash.com/photo-1556742111-a301076d9d18?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-                 class="img-fluid rounded-3 shadow-sm" style="max-height: 250px; object-fit: cover;" alt="Shopping Banner">
-        </div>
-    </div>
+    <header class="p-5 hero-panel mx-auto mb-5 text-center" style="max-width: 800px; padding: 3rem 5rem !important;">
+        <h1 class="display-4 fw-bolder text-dark mb-3">Find Your Style.<br>Secure Your Purchase.</h1>
+        <p class="lead text-muted mb-4">
+            Explore our curated collection of premium goods. We focus on durability, quality, and fast, reliable delivery.
+        </p>
+        <a href="#products-list" class="btn btn-hero shadow-sm fw-bold">SHOP THE COLLECTION</a>
+    </header>
 
-    <h2 class="display-6 fw-bold text-center mb-5 text-primary" id="products-list">Featured Products</h2>
+    <section id="products-list">
+        <h2 class="text-center featured-header mb-5">Featured Collection</h2>
 
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        {% if products %}
-            {% for product in products %}
-            <div class="col">
-                <div class="card h-100 shadow-sm border-0">
+        <div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
+            {% if products %}
+                {% for product in products %}
+                    <div class="col">
+                        <div class="card h-100 shadow-sm bg-white">
+                            
+                            <div style="height: 280px; overflow: hidden; background-color: var(--color-light-yellow);" class="rounded-top-4 p-3 d-flex align-items-center justify-content-center">
+                                <a href="{% url 'product_detail' product.pk %}" style="display: block; width: 100%; height: 100%;">
+                                    {% if "Shirt" in product.name %}
+                                        <img src="https://images.unsplash.com/photo-1574317424683-11b3394806a1?q=80&w=2070&auto=format&fit=contain"
+                                             class="img-fluid" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: contain;">
+                                    {% elif "Wallet" in product.name %}
+                                        <img src="https://images.unsplash.com/photo-1549419161-042838491c6e?q=80&w=2070&auto=format&fit=cover"
+                                             class="img-fluid" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                    {% elif "Shoes" in product.name %}
+                                        <img src="https://images.unsplash.com/photo-1606107557195-2c83086b13be?q=80&w=2070&auto=format&fit=contain"
+                                             class="img-fluid" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: contain;">
+                                    {% else %}
+                                        <img src="https://picsum.photos/seed/general/600/400"
+                                             class="img-fluid" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                    {% endif %}
+                                </a>
+                            </div>
 
-                    {% if "Shirt" in product.name %}
-                        <img src="https://images.unsplash.com/photo-1596755094514-f87e34085852?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
-                    {% elif "Wallet" in product.name %}
-                        <img src="https://images.unsplash.com/photo-1549419161-042838491c6e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
-                    {% elif "Shoes" in product.name %}
-                        <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=2124&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
-                    {% else %}
-                        <img src="https://images.unsplash.com/photo-1528698827571-3c6b788640d0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
-                    {% endif %}
+                            <div class="card-body d-flex flex-column pt-3 text-center">
+                                <h3 class="h5 fw-bold text-dark">{{ product.name }}</h3>
+                                <p class="card-text text-muted mb-2 small">{{ product.description|truncatewords:10 }}</p>
 
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title fw-bolder text-primary">{{ product.name }}</h5>
-                        <h4 class="card-subtitle mb-2 text-danger">£{{ product.price }}</h4>
-                        <p class="card-text text-muted mb-4 small">{{ product.description|truncatewords:15 }}</p>
-                        <div class="mt-auto">
-                            <a href="{% url 'product_detail' product.pk %}" class="btn btn-primary w-100">View Details</a>
+                                <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top mx-auto w-75">
+                                    <h4 class="fw-bolder mb-0 price-text">
+                                        £{{ product.price }}
+                                    </h4>
+                                    <a href="{% url 'product_detail' product.pk %}" class="btn btn-primary btn-sm shadow-sm fw-bold">
+                                        Details 
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        No products found. Please ensure data migrations have run successfully.
+                    </div>
                 </div>
-            </div>
-            {% endfor %}
-        {% else %}
-            <div class="col">
-                <p class="lead">No products available right now.</p>
-            </div>
-        {% endif %}
-    </div>
+            {% endif %}
+        </div>
+    </section>
+
 {% endblock %}

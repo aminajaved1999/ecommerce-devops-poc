@@ -1,34 +1,57 @@
 {% extends "store/base.html" %}
 
 {% block content %}
-    <div class="card p-4 shadow-lg border-0">
-        <div class="row g-0">
-            <div class="col-md-6 mb-4">
+
+    <a href="{% url 'product_list' %}" class="btn btn-outline-secondary mb-4">
+        <i class="bi bi-arrow-left-circle me-1"></i> Back to Catalog
+    </a>
+
+    <div class="card p-4 p-md-5 shadow-lg bg-white">
+        <div class="row g-4 align-items-start">
+            <div class="col-md-6">
                 {% if "Shirt" in product.name %}
-                    <img src="https://images.unsplash.com/photo-1596755094514-f87e34085852?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid rounded-3 shadow-sm" alt="{{ product.name }}">
+                    <img src="https://images.unsplash.com/photo-1574317424683-11b3394806a1?q=80&w=2070&auto=format&fit=cover"
+                         class="img-fluid rounded-3 shadow-lg" alt="{{ product.name }}">
                 {% elif "Wallet" in product.name %}
-                    <img src="https://images.unsplash.com/photo-1549419161-042838491c6e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid rounded-3 shadow-sm" alt="{{ product.name }}">
+                    <img src="https://images.unsplash.com/photo-1549419161-042838491c6e?q=80&w=2070&auto=format&fit=cover"
+                         class="img-fluid rounded-3 shadow-lg" alt="{{ product.name }}">
                 {% elif "Shoes" in product.name %}
-                    <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=2124&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid rounded-3 shadow-sm" alt="{{ product.name }}">
+                    <img src="https://images.unsplash.com/photo-1606107557195-2c83086b13be?q=80&w=2070&auto=format&fit=cover"
+                         class="img-fluid rounded-3 shadow-lg" alt="{{ product.name }}">
                 {% else %}
-                    <img src="https://images.unsplash.com/photo-1528698827571-3c6b788640d0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid rounded-3 shadow-sm" alt="{{ product.name }}">
+                    <img src="https://picsum.photos/seed/general/800/600"
+                         class="img-fluid rounded-3 shadow-lg" alt="{{ product.name }}">
                 {% endif %}
             </div>
 
-            <div class="col-md-6 ps-md-4">
-                <h1 class="display-4 fw-bold mb-3 text-primary">{{ product.name }}</h1>
-                <h2 class="text-danger mb-4">£{{ product.price }}</h2>
-                <hr>
+            <div class="col-md-6">
+                <p class="small text-muted mb-2">PRODUCT DETAIL · IPSWICH RETAIL</p>
+                <h1 class="display-5 fw-bolder mb-3 text-dark">{{ product.name }}</h1>
 
-                <p class="lead mb-4">{{ product.description|linebreaks }}</p>
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <span class="price-text">
+                        £{{ product.price }}
+                    </span>
+                    <span class="badge text-bg-primary">
+                        <i class="bi bi-cpu me-1"></i> PoC Model
+                    </span>
+                </div>
 
-                <div class="d-grid gap-2">
-                    <a href="{% url 'cart' %}" class="btn btn-danger btn-lg shadow-sm">Add to Cart (PoC)</a>
-                    <p class="text-muted text-center mt-3 small">DevOps Note: This is a placeholder action in the PoC.</p>
+                <p class="lead mb-4 text-muted">{{ product.description|linebreaks }}</p>
+
+                <div class="d-grid gap-2 mb-4">
+                    <a href="{% url 'cart' %}" class="btn btn-accent btn-lg shadow-sm fw-bold">
+                        <i class="bi bi-cart-plus me-2"></i> ADD TO CART (Demo)
+                    </a>
+                </div>
+
+                <div class="small text-muted">
+                    <i class="bi bi-info-circle me-1"></i>
+                    This screen demonstrates a product detail view backed by a Django model,
+                    rendered via the MVT pattern.
                 </div>
             </div>
         </div>
     </div>
-    <br>
-    <a href="{% url 'product_list' %}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left-circle me-1"></i> Back to Products</a>
+
 {% endblock %}

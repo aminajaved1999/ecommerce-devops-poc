@@ -1,12 +1,44 @@
 {% extends "store/base.html" %}
 
 {% block content %}
-    <h1 class="display-5 fw-bold">Checkout</h1>
-    <hr class="my-4">
 
-    <div class="alert alert-warning">
-        <strong>This is a Proof-of-Concept.</strong> A real checkout page would include forms for shipping, billing, and payment.
+    <header class="mb-5 border-bottom pb-3">
+        <h1 class="display-5 fw-bold text-dark">Secure Checkout</h1>
+        <p class="lead text-muted">Final step to complete your order. Focus is on E-2-E pipeline demonstration.</p>
+    </header>
+
+    <div class="card p-4 p-md-5 shadow-lg bg-white">
+        <div class="alert alert-warning bg-opacity-10 border-0 text-dark d-flex align-items-center gap-2" role="alert"
+             style="background-color: #fff3cd;">
+            <i class="bi bi-exclamation-triangle-fill text-warning"></i>
+            <div>
+                <strong>Proof-of-Concept Notice.</strong>
+                This page demonstrates where payment, billing, and shipping flows would live. No live transactions occur.
+            </div>
+        </div>
+
+        <div class="row g-4 mt-3">
+            <div class="col-md-7">
+                <h2 class="h5 fw-bold text-dark mb-3">Production Requirements Demonstrated</h2>
+                <ul class="list-unstyled small text-muted">
+                    <li><i class="bi bi-check-circle-fill text-accent me-2"></i> **Pipeline:** End-to-end functionality of the CI/CD deployment.</li>
+                    <li><i class="bi bi-check-circle-fill text-accent me-2"></i> **Modularity:** Separation of concerns using Django M-V-T.</li>
+                    <li><i class="bi bi-check-circle-fill text-accent me-2"></i> **Consistency:** Containerization via Docker ensures stable environments.</li>
+                </ul>
+            </div>
+            <div class="col-md-5">
+                <div class="card p-4 shadow-sm">
+                    <h5 class="fw-bold text-dark mb-3">Order Finalization</h5>
+                    <p class="small text-muted">This action completes the PoC lifecycle demo.</p>
+                    <a href="{% url 'product_list' %}" class="btn btn-primary w-100 fw-bold">
+                        Complete Order (Demo)
+                    </a>
+                    <a href="{% url 'cart' %}" class="btn btn-outline-secondary w-100 mt-2">
+                        ← Back to Cart
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <a href="{% url 'cart' %}" class="btn btn-outline-secondary btn-lg">← Back to Cart</a>
 {% endblock %}
