@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Product, Cart, CartItem, Order, OrderItem # <-- Added new models
+from .models import Product, Cart, CartItem, Order, OrderItem, Category # <-- Added Category
 
 # Inline to display items within the Cart admin view
 class CartItemInline(admin.TabularInline):
@@ -15,11 +15,17 @@ class OrderItemInline(admin.TabularInline):
     extra = 0
     readonly_fields = ('subtotal',)
 
-# MODIFIED: Register Product with list_display to show stock
+# MODIFIED: Register Product with list_display to show stock and Category
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'inventory_stock')
+    list_display = ('name', 'category', 'price', 'inventory_stock')
     list_editable = ('price', 'inventory_stock')
+    list_filter = ('category',) # <-- Added filter
+
+@admin.register(Category) # <-- Register Category
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug')
+    prepopulated_fields = {'slug': ('name',)}
 
 
 @admin.register(Cart)
