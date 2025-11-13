@@ -4,7 +4,7 @@ from . import views
 urlpatterns = [
     # Home/Product List (Modified to accept optional category slug)
     path('', views.product_list, name='product_list'),
-    path('category/<slug:category_slug>/', views.product_list, name='product_list_by_category'), # <-- NEW: Filtered view
+    path('category/<slug:category_slug>/', views.product_list, name='product_list_by_category'), # Filtered view
 
     # Product Detail
     path('product/<int:pk>/', views.product_detail, name='product_detail'),
