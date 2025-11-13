@@ -28,6 +28,7 @@ DEBUG = True # <--- CHANGED FROM True TO False
 
 ALLOWED_HOSTS = [
     'amina-devops-poc.onrender.com',
+    'https://ecommerce-devops-poc-mlbv.onrender.coml',
     'localhost',
     '127.0.0.1',
 ]
