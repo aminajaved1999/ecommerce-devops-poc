@@ -22,6 +22,7 @@
                             
                             <div style="height: 280px; overflow: hidden; background-color: var(--color-light-yellow);" class="rounded-top-4 p-3 d-flex align-items-center justify-content-center">
                                 <a href="{% url 'product_detail' product.pk %}" style="display: block; width: 100%; height: 100%;">
+                                    {# START: EXPANDED IMAGE LOGIC #}
                                     {% if "Shirt" in product.name %}
                                         <img src="{% static 'img/shirt.jpg' %}"
                                              class="img-fluid" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: contain;">
@@ -31,10 +32,23 @@
                                     {% elif "Shoes" in product.name %}
                                         <img src="{% static 'img/shoes.jpg' %}"
                                              class="img-fluid" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: contain;">
+                                    {% elif "Loafer" in product.name %}
+                                        <img src="{% static 'img/loafers.png' %}"
+                                             class="img-fluid" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: contain;">
+                                    {% elif "Hoodie" in product.name %}
+                                        <img src="{% static 'img/hoodie.png' %}"
+                                             class="img-fluid" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: contain;">
+                                    {% elif "Jeans" in product.name %}
+                                        <img src="{% static 'img/jeans.png' %}"
+                                             class="img-fluid" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: contain;">
+                                    {% elif "Bag" in product.name %}
+                                        <img src="{% static 'img/cross_body_bag.png' %}"
+                                             class="img-fluid" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: contain;">
                                     {% else %}
                                         <img src="{% static 'img/default.jpg' %}"
                                              class="img-fluid" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: cover;">
                                     {% endif %}
+                                    {# END: EXPANDED IMAGE LOGIC #}
                                 </a>
                             </div>
 
