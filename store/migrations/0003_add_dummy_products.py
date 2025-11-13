@@ -25,7 +25,7 @@ def create_dummy_products(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('store', '0001_initial'), # This name might be different, check your 0001 file
+        ('store', '0001_initial'), # This should now be correct!
     ]
 
     operations = [
