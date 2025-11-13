@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ipswich Retail</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        .product { border: 1px solid #ccc; padding: 1em; margin-bottom: 1em; }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Ipswich Retail</h1>
+    <h2>Our Products</h2>
+
+    {% if products %}
+        {% for product in products %}
+            <div class="product">
+                <h3>{{ product.name }}</h3>
+                <p>Price: £{{ product.price }}</p>
+                {% if product.description %}
+                    <p>{{ product.description }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No products available right now.</p>
+    {% endif %}
+
+</body>
+</html>
