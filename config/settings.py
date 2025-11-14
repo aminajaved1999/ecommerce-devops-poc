@@ -60,6 +60,8 @@ else:
     ALLOWED_HOSTS = [
         'localhost',
         '127.0.0.1',
+        # FIX ADDED HERE: Allows Render domain when debugging locally or in fallback on Render
+        'amina-devops-poc.onrender.com', 
     ]
 
     # Use SQLite for local development
