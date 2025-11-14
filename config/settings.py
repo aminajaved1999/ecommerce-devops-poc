@@ -55,13 +55,14 @@ if 'DATABASE_URL' in os.environ:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
 else:
-    # Local development settings
+    # Local development settings (Fallback)
     DEBUG = True
     ALLOWED_HOSTS = [
         'localhost',
         '127.0.0.1',
-        # FIX ADDED HERE: Allows Render domain when debugging locally or in fallback on Render
+        # FIX: Added production hosts to allow access when DEBUG=True is active on Render
         'amina-devops-poc.onrender.com', 
+        'ecommerce-devops-poc-mlbv.onrender.com', 
     ]
 
     # Use SQLite for local development
