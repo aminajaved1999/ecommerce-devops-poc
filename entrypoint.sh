@@ -1,8 +1,9 @@
+# entrypoint.sh
+
 #!/bin/sh
 
-# Apply database migrations
-echo "Applying database migrations..."
-python manage.py migrate
+# REMOVED: # Apply database migrations (to prevent unnecessary work/errors)
+# REMOVED: # python manage.py migrate
 
 # Collect static files (CRITICAL NEW STEP)
 echo "Collecting static files..."

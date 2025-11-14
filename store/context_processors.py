@@ -1,20 +1,14 @@
-from .models import Category
-from django.db.utils import OperationalError # <-- NEW IMPORT
+# store/context_processors.py
+
+# Remove: from .models import Category
+# Remove: from django.db.utils import OperationalError
 
 def categories_processor(request):
     """
-    Makes all categories available in the context of every request.
-    
-    Includes try/except to gracefully handle OperationalError (no such table)
-    caused by ephemeral SQLite databases in production environments like Render.
+    Makes a placeholder empty list for categories available globally.
+    Database access is completely removed to prevent OperationalError on Render's free tier.
     """
-    try: # <-- ADDED TRY BLOCK
-        return {
-            'all_categories': Category.objects.all()
-        }
-    except OperationalError: # <-- ADDED EXCEPTION HANDLING
-        # This occurs if the database file is not present or has been reset.
-        # Return an empty list to allow the template to render without crashing.
-        return {
-            'all_categories': []
-        }
+    # Simply return an empty list. No database calls, no crash.
+    return {
+        'all_categories': []
+    }
