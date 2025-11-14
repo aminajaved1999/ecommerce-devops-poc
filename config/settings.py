@@ -24,6 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-p%hqur)!*do8^o$_3rtuu5q1k8s+h^m)7s6h=qx44+b7cb6g5v'
 
+# FIX: Store sessions in the user's cookie instead of the database
+# This avoids the "no such table: django_session" error for the PoC
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies' 
 
 # =======================================================
 # ENVIRONMENT-SPECIFIC SETTINGS (Production/Development)
@@ -50,7 +53,7 @@ if 'DATABASE_URL' in os.environ:
     }
     
     # Recommended security settings for production
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https') # <-- THIS IS THE FIX
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
