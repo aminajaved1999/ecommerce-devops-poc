@@ -11,8 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-import os
-import dj_database_url # NEW: Import for connecting to PostgreSQL on Render
+import os 
+import dj_database_url # Import for connecting to PostgreSQL on Render
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,19 +29,18 @@ SECRET_KEY = 'django-insecure-p%hqur)!*do8^o$_3rtuu5q1k8s+h^m)7s6h=qx44+b7cb6g5v
 # ENVIRONMENT-SPECIFIC SETTINGS (Production/Development)
 # =======================================================
 
-# 🐛 DEBUG and 🔓 ALLOWED_HOSTS for Production (Render)
-
+# Check for DATABASE_URL environment variable provided by Render
 if 'DATABASE_URL' in os.environ:
     # Production settings
     DEBUG = False 
     
-    # Corrected the typo and added the proper hostname format
+    # CORRECTED ALLOWED_HOSTS for your Render URL
     ALLOWED_HOSTS = [
         'amina-devops-poc.onrender.com',
         'ecommerce-devops-poc-mlbv.onrender.com', 
     ]
     
-    # Use dj_database_url to configure PostgreSQL
+    # Use dj_database_url to configure PostgreSQL (PERSISTENT DB FIX)
     DATABASES = {
         'default': dj_database_url.config(
             default=os.environ['DATABASE_URL'],
@@ -116,6 +115,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
@@ -136,7 +136,7 @@ STATIC_URL = '/static/'
 # PRODUCTION STATIC FILES CONFIGURATION (CRITICAL)
 
 # Directory where collectstatic will gather files on the server
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Directories to search for static files (your local 'static' folder)
 STATICFILES_DIRS = [
