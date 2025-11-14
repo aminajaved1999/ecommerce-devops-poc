@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-import os 
+import os
+import dj_database_url # NEW: Import for connecting to PostgreSQL on Render
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,19 +24,55 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-p%hqur)!*do8^o$_3rtuu5q1k8s+h^m)7s6h=qx44+b7cb6g5v'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True # <--- CHANGED FROM True TO False
 
-ALLOWED_HOSTS = [
-    'amina-devops-poc.onrender.com',
-    'ecommerce-devops-poc-mlbv.onrender.com',
-    'localhost',
-    '127.0.0.1',
-]
+# =======================================================
+# ENVIRONMENT-SPECIFIC SETTINGS (Production/Development)
+# =======================================================
+
+# 🐛 DEBUG and 🔓 ALLOWED_HOSTS for Production (Render)
+
+if 'DATABASE_URL' in os.environ:
+    # Production settings
+    DEBUG = False 
+    
+    # Corrected the typo and added the proper hostname format
+    ALLOWED_HOSTS = [
+        'amina-devops-poc.onrender.com',
+        'ecommerce-devops-poc-mlbv.onrender.com', 
+    ]
+    
+    # Use dj_database_url to configure PostgreSQL
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ['DATABASE_URL'],
+            conn_max_age=600,
+            ssl_require=True # Important for Render connections
+        )
+    }
+    
+    # Recommended security settings for production
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+else:
+    # Local development settings
+    DEBUG = True
+    ALLOWED_HOSTS = [
+        'localhost',
+        '127.0.0.1',
+    ]
+
+    # Use SQLite for local development
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Application definition
-# ... (rest of INSTALLED_APPS and MIDDLEWARE remain the same)
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -79,18 +116,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+# Internationalization
+# https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+LANGUAGE_CODE = 'en-us'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+TIME_ZONE = 'America/Chicago'
 
-# ... (rest of settings remain the same)
+USE_I18N = True
+
+USE_TZ = True
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
