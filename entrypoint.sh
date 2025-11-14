@@ -2,8 +2,9 @@
 
 #!/bin/sh
 
-# REMOVED: # Apply database migrations (to prevent unnecessary work/errors)
-# REMOVED: # python manage.py migrate
+# Apply database migrations
+# REMOVED: echo "Applying database migrations..."
+# REMOVED: python manage.py migrate
 
 # Collect static files (CRITICAL NEW STEP)
 echo "Collecting static files..."
